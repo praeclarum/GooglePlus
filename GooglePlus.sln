@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GooglePlus.Cli", "GooglePlus.Cli\GooglePlus.Cli.csproj", "{12B923C5-742F-4455-BDB1-F4E591AB8BAC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GooglePlus", "GooglePlus\GooglePlus.csproj", "{278B0FBC-C4B0-46C3-AD59-136A0573698F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2A08625E-2BD0-4C55-93B6-25FF7E19A302}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{12B923C5-742F-4455-BDB1-F4E591AB8BAC}.Debug|x86.ActiveCfg = Debug|x86
+		{12B923C5-742F-4455-BDB1-F4E591AB8BAC}.Debug|x86.Build.0 = Debug|x86
+		{12B923C5-742F-4455-BDB1-F4E591AB8BAC}.Release|x86.ActiveCfg = Release|x86
+		{12B923C5-742F-4455-BDB1-F4E591AB8BAC}.Release|x86.Build.0 = Release|x86
+		{278B0FBC-C4B0-46C3-AD59-136A0573698F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{278B0FBC-C4B0-46C3-AD59-136A0573698F}.Debug|x86.Build.0 = Debug|Any CPU
+		{278B0FBC-C4B0-46C3-AD59-136A0573698F}.Release|x86.ActiveCfg = Release|Any CPU
+		{278B0FBC-C4B0-46C3-AD59-136A0573698F}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = GooglePlus.Cli\GooglePlus.Cli.csproj
+	EndGlobalSection
+EndGlobal
