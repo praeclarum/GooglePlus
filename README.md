@@ -4,6 +4,12 @@ The Google+ API
 Below is documentation on how to access Google+ resources. It's based on the access patterns of the
 browser.
 
+What you should be impressed most about this API is how large some of these
+data objects are. For instance, the `Item` object below which represents an
+item in your stream has **23 documented fields** while the Google code
+has room for **91 fields**. Who knows what they have in store for us next.
+
+
 1 Authentication
 ===
 
@@ -179,6 +185,12 @@ Every Item has an `ItemType` which can be one of:
         2: ItemCommentsId
     ]
     
+    UserRef = [
+        0: FullName: string
+        1: UserId: string
+        5: UserUrl: relative url
+    ]
+    
     Item = [
         0: Up: string
         2: ItemType: string
@@ -197,11 +209,31 @@ Every Item has an `ItemType` which can be one of:
         21: PostUrl: relative url
         22: SomeId: string
         24: UserUrl: relative url
+        25: RelatedUsers: UserRef[]
         30: ItemCommentsId: string
         33: PreviewHtml: string
         60: HiddenComments
         73: Voting
         84: SomeDomain: string = "social.google.com"        
+    ]
+    
+    Circle = [
+        0: [
+            0: Id: string
+        ]
+        1: [
+            0: Name: string
+            2: Description: string
+            12: UrlId
+            13: Order: int
+        ]
+    ]
+    
+    PagingInfo = [
+        0: Page: int // 1-based
+        1: NumPages: int
+        5: ItemsPerPage: int
+        7: Domain: string
     ]
 
 
@@ -210,17 +242,26 @@ Every Item has an `ItemType` which can be one of:
     
     HomeDate = {
         "2": LoggedInUserData
-        "4": StreamItems: Item[]
+        "4": StreamItemsData
+        "12": CirclesData
     }
 
     LoggedInUserData = [        
         0: UserId: string
         1: UserData
         2: Email: string
-        
         4: Culture: string
         20: HumanReadableEmail: string
         21: AllUrl: relative url
+    ]
+    
+    StreamItemsData = [
+        0: Items: Item[]
+        2: PagingInfo
+    ]
+    
+    CirclesData = [
+        0: Circles: Circle[]
     ]
 
     
