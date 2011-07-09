@@ -50,5 +50,90 @@ JavaScript data in `<script>` tags. The next section covers some of that data.
 2 The API Data
 ===
 
-TBD
+2.1 Home Data
+---
+
+    Date = [
+        0: Day: int
+        1: Month: int
+        2: Year: int
+        3: Formatted: string
+    ]
+    
+    Job = [
+        0: Company
+        1: Title
+        2: Dates: Date[]
+    ]
+
+    School = [
+        0: Name
+        1: Degree
+        2: Dates: Date[]
+    ]
+
+    UserData = [
+    
+        2: UserUrl: url
+        3: PhotoUrl: url
+        4: [
+            1: FirstName: string
+            2: LastName: string
+            3: FullName: string
+        ]
+        6: [
+            1: Profession: string
+        ]
+        7: [
+            1: Jobs: Job[]
+        ]
+        8: [
+            1: Education: School[]
+        ]
+        9: [
+            1: Location: string
+            2: PastLocations: string[]
+        ]
+        10: LocationMapUrl: relative url
+    
+    ]
+
+    "2": LoggedInUserData = [
+        
+        0: UserId: string
+        1: UserData
+        2: Email: string
+        
+        4: Culture: string
+        20: HumanReadableEmail: string
+        21: AllUrl: relative url
+    ]
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
