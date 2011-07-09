@@ -50,7 +50,7 @@ JavaScript data in `<script>` tags. The next section covers some of that data.
 2 The API Data
 ===
 
-2.1 Home Data
+2.1 Common Data
 ---
 
     Date = [
@@ -71,9 +71,15 @@ JavaScript data in `<script>` tags. The next section covers some of that data.
         1: Degree
         2: Dates: Date[]
     ]
-
-    UserData = [
     
+    Link = [
+        1: Url: url
+        2: FaviconUrl: relative url
+        3: Title: string
+        6: AllUrls: url[]        
+    ]
+
+    UserData = [    
         2: UserUrl: url
         3: PhotoUrl: url
         4: [
@@ -95,11 +101,28 @@ JavaScript data in `<script>` tags. The next section covers some of that data.
             2: PastLocations: string[]
         ]
         10: LocationMapUrl: relative url
-    
+        11: [
+            0: UserLinks: Link[]
+        ]
+        30: UserId: string
+        33: [
+            1: ProfileString: string
+        ]
+        44: Flags: int[]
+        47: [
+            1: ShortName: string
+        ]        
     ]
 
-    "2": LoggedInUserData = [
-        
+
+2.2 Home Data
+---
+    
+    HomeDate = {
+        "2": LoggedInUserData
+    }
+
+    LoggedInUserData = [        
         0: UserId: string
         1: UserData
         2: Email: string
@@ -108,6 +131,7 @@ JavaScript data in `<script>` tags. The next section covers some of that data.
         20: HumanReadableEmail: string
         21: AllUrl: relative url
     ]
+
     
     
 
