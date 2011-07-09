@@ -50,6 +50,12 @@ JavaScript data in `<script>` tags. The next section covers some of that data.
 2 The API Data
 ===
 
+Every Item has an `ItemType` which can be one of:
+
+* **Photos** Photos and Profile Photos
+* **Buzz** Text Post
+
+
 2.1 Common Data
 ---
 
@@ -61,14 +67,14 @@ JavaScript data in `<script>` tags. The next section covers some of that data.
     ]
     
     Job = [
-        0: Company
-        1: Title
+        0: Company: string
+        1: Title: string
         2: Dates: Date[]
     ]
 
     School = [
-        0: Name
-        1: Degree
+        0: Name: string
+        1: Degree: string
         2: Dates: Date[]
     ]
     
@@ -113,6 +119,90 @@ JavaScript data in `<script>` tags. The next section covers some of that data.
             1: ShortName: string
         ]        
     ]
+    
+    Voter = [
+        0: FullName
+        1: UserId: string
+        2: UserUrl: url
+        3: UserPhotoUrl: url
+    ]
+    
+    Voting = [
+        0: UrlId: string
+        1: VoteType: int // 4 = post, 5 = comment
+        16: TotalVotes: int
+        17: KnownVoters: Voter[]
+    ]
+    
+    Comment = [    
+        1: UserFullName: string
+        2: FullTextHtml: string
+        3: ItemCommentsId: string
+        4: CommentInCommentsUrlId: string
+        5: FullTextRaw: string
+        6: UserId: string
+        7: CommentUrlId: string
+        10: UserUrl: relative url
+        15: Voting
+        16: UserPhotoUrl: url    
+    ]
+    
+    Thumbnail = [
+        1: ImageUrl: url
+        2: Height: int
+        3: Width: int
+    ]
+    
+    Media = [
+        1: Url: url
+        3: ContentType: string
+        4: ShortContentType: string
+    ]
+    
+    MetadataEntry = [
+        1: Value
+        2: Key
+    ]
+    
+    Attachment = [
+        5: Thumbnail
+        21: SomeImageUrl: url
+        24: Media
+        41: Thumbnails: Thumbnail[]
+        47: Metadata: MetadataEntry[]
+    ]
+    
+    HiddenComments = [
+        0: Count
+        1: Commentators: string[]
+        2: HiddenCommentsId
+        2: ItemCommentsId
+    ]
+    
+    Item = [
+        0: Up: string
+        2: ItemType: string
+        3: UserFullName: string
+        4: FullTextHtml: string
+        5: ItemId: string
+        6: FaviconUrl: url
+        7: Comments: Comment[]
+        8: ItemUrlId: string
+        10: Tags: string /* colon separated */
+        11: Attachments: Attachment[]
+        14: FullTextIntermediate: string
+        16: UserId: string
+        18: PhotoUrl: url
+        20: FullTextRaw: string
+        21: PostUrl: relative url
+        22: SomeId: string
+        24: UserUrl: relative url
+        30: ItemCommentsId: string
+        33: PreviewHtml: string
+        60: HiddenComments
+        73: Voting
+        84: SomeDomain: string = "social.google.com"        
+    ]
 
 
 2.2 Home Data
@@ -120,6 +210,7 @@ JavaScript data in `<script>` tags. The next section covers some of that data.
     
     HomeDate = {
         "2": LoggedInUserData
+        "4": StreamItems: Item[]
     }
 
     LoggedInUserData = [        
