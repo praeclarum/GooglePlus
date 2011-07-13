@@ -19,7 +19,8 @@ kick it off, grab some cookies from:
 1.1 GET http://plus.google.com
 ---
 
-We do this just to collect some cookies.
+We do this just to collect some cookies and the **gpcaz** variable in the
+response URL.
 
 1.2 GET https://www.google.com/accounts/ServiceLogin?service=oz&continue=https://plus.google.com/?gpcaz%3DXXXXXXXX&ltmpl=es2st&hideNewAccountLink=1&hl=en-US
 ---
@@ -154,7 +155,7 @@ Every Item has an `ItemType` which can be one of:
     ]
     
     Thumbnail = [
-        1: ImageUrl: url
+        1: ResourceUrl: url
         2: Height: int
         3: Width: int
     ]
@@ -171,7 +172,7 @@ Every Item has an `ItemType` which can be one of:
     ]
     
     Attachment = [
-        5: Thumbnail
+        5: Preview: Thumbnail
         21: SomeImageUrl: url
         24: Media
         41: Thumbnails: Thumbnail[]

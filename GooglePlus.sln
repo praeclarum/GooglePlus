@@ -10,10 +10,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GooglePlus.Touch", "GooglePlus.Touch\GooglePlus.Touch.csproj", "{C6484729-E9E1-4694-8888-CAA68B3A1C03}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
 		Release|x86 = Release|x86
+		Debug|iPhoneSimulator = Debug|iPhoneSimulator
+		Release|iPhoneSimulator = Release|iPhoneSimulator
+		Debug|iPhone = Debug|iPhone
+		Release|iPhone = Release|iPhone
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{12B923C5-742F-4455-BDB1-F4E591AB8BAC}.Debug|x86.ActiveCfg = Debug|x86
@@ -24,6 +30,18 @@ Global
 		{278B0FBC-C4B0-46C3-AD59-136A0573698F}.Debug|x86.Build.0 = Debug|Any CPU
 		{278B0FBC-C4B0-46C3-AD59-136A0573698F}.Release|x86.ActiveCfg = Release|Any CPU
 		{278B0FBC-C4B0-46C3-AD59-136A0573698F}.Release|x86.Build.0 = Release|Any CPU
+		{C6484729-E9E1-4694-8888-CAA68B3A1C03}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{C6484729-E9E1-4694-8888-CAA68B3A1C03}.Debug|iPhone.Build.0 = Debug|iPhone
+		{C6484729-E9E1-4694-8888-CAA68B3A1C03}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{C6484729-E9E1-4694-8888-CAA68B3A1C03}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{C6484729-E9E1-4694-8888-CAA68B3A1C03}.Debug|x86.ActiveCfg = Debug|iPhoneSimulator
+		{C6484729-E9E1-4694-8888-CAA68B3A1C03}.Debug|x86.Build.0 = Debug|iPhoneSimulator
+		{C6484729-E9E1-4694-8888-CAA68B3A1C03}.Release|iPhone.ActiveCfg = Release|iPhone
+		{C6484729-E9E1-4694-8888-CAA68B3A1C03}.Release|iPhone.Build.0 = Release|iPhone
+		{C6484729-E9E1-4694-8888-CAA68B3A1C03}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{C6484729-E9E1-4694-8888-CAA68B3A1C03}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{C6484729-E9E1-4694-8888-CAA68B3A1C03}.Release|x86.ActiveCfg = Release|iPhoneSimulator
+		{C6484729-E9E1-4694-8888-CAA68B3A1C03}.Release|x86.Build.0 = Release|iPhoneSimulator
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
