@@ -398,6 +398,19 @@ namespace GooglePlus
         //public string RelatedUsers: UserRef[]
         public string ItemCommentsId;
         public string PreviewHtml;
+		
+		public string PlainText {
+			get {
+				var t = FullTextRaw;
+				if (string.IsNullOrEmpty (t)) {
+					t = FullTextIntermediate;
+				}
+				if (string.IsNullOrEmpty (t)) {
+					t = FullTextHtml;
+				}
+				return t;
+			}
+		}
 
 		public Item (IList d)
 			: base (d) 
@@ -425,12 +438,12 @@ namespace GooglePlus
 	
 	public class StreamItemsData : Data
 	{
-		public readonly List<Item> Items;
+		public readonly List<Item> Page0;
 		
 		public StreamItemsData (IList d)
 			: base (d) 
 		{
-			Items = ListAt (0, x => new Item (x));
+			Page0 = ListAt (0, x => new Item (x));
 		}
 	}
 	

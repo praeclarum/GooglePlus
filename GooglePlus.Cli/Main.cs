@@ -30,6 +30,7 @@ namespace GooglePlus.Cli
 	class App
 	{
 		Api api;
+		HomeData data;
 		
 		void SignIn ()
 		{
@@ -37,9 +38,12 @@ namespace GooglePlus.Cli
 			var email = Console.ReadLine ();
 			Console.Write ("password: ");
 			var pwd = ReadPassword ();
+			Console.WriteLine ();
 			
 			api = new Api ();
-			api.SignIn (email, pwd);
+			data = api.SignIn (email, pwd);
+			
+			StreamCommand ();
 		}
 		
 		void HelpCommand ()
@@ -49,6 +53,23 @@ namespace GooglePlus.Cli
 			foreach (var cmd in commands) {
 				Console.WriteLine ("  " + cmd.Key);
 			}			
+		}		
+		
+		void StreamCommand ()
+		{
+			var page = data.StreamItems.Page0;
+			var nameWidth = (from i in page select i.UserFullName.Length).Max ();
+			foreach (var i in page) {
+				Console.WriteLine ("{0,-"+nameWidth+"} {1}", 
+					i.UserFullName,
+					Truncate (i.PlainText.Replace ("\n", " "), Console.WindowWidth - nameWidth - 1));
+			}
+		}
+		
+		static string Truncate (string s, int len)
+		{
+			if (s.Length <= len) return s;
+			else return s.Substring (0, len - 3) + "...";
 		}
 		
 		void Repl ()
