@@ -1,3 +1,6 @@
-GooglePlus.Cli/bin/
-GooglePlus.userprefs
+*.pidb
+*.userprefs
 GooglePlus/bin/
+GooglePlus.Cli/bin/
+GooglePlus.Touch/bin/
+
