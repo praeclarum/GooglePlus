@@ -246,11 +246,13 @@ namespace GooglePlus
 	public class HomeData : Data
 	{
 		public StreamItemsData StreamItems;
+		public CirclesData Circles;
 		
 		public HomeData (IDictionary<string, object> d)
 			: base (new ArrayList ()) 
 		{
 			StreamItems = new StreamItemsData ((IList)d ["4"]);
+			Circles = new CirclesData ((IList)d ["12"]);
 		}
 	}
 	public class Media : Data
@@ -429,6 +431,37 @@ namespace GooglePlus
 			: base (d) 
 		{
 			Items = ListAt (0, x => new Item (x));
+		}
+	}
+	
+	public class Circle : Data
+	{
+		public string CircleId;
+        public string Name;
+		public string Description;
+		public string UrlId;
+		public int Order;
+
+		public Circle (IList d)
+			: base (d) 
+		{
+			CircleId = ((IList)(d [0]))[0].ToString ();
+			var d1 = (IList)d [1];
+			Name = d1 [0].ToString ();
+			Description = d1 [2].ToString ();
+			UrlId = d1 [12].ToString ();
+			int.TryParse (d1 [13].ToString (), out Order);
+		}
+	}
+	
+	public class CirclesData : Data
+	{
+		public readonly List<Circle> Circles;
+		
+		public CirclesData (IList d)
+			: base (d) 
+		{
+			Circles = ListAt (0, x => new Circle (x));
 		}
 	}
 }

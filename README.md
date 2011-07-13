@@ -220,12 +220,12 @@ Every Item has an `ItemType` which can be one of:
     
     Circle = [
         0: [
-            0: Id: string
+            0: CircleId: string
         ]
         1: [
             0: Name: string
             2: Description: string
-            12: UrlId
+            12: UrlId: string
             13: Order: int
         ]
     ]
