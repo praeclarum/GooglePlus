@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GooglePlus.Touch", "GooglePlus.Touch\GooglePlus.Touch.csproj", "{B4417756-F17D-4165-B21A-ADED3106A865}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|iPhoneSimulator = Debug|iPhoneSimulator
+		Release|iPhoneSimulator = Release|iPhoneSimulator
+		Debug|iPhone = Debug|iPhone
+		Release|iPhone = Release|iPhone
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B4417756-F17D-4165-B21A-ADED3106A865}.Debug|iPhone.ActiveCfg = Debug|iPhone
+		{B4417756-F17D-4165-B21A-ADED3106A865}.Debug|iPhone.Build.0 = Debug|iPhone
+		{B4417756-F17D-4165-B21A-ADED3106A865}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
+		{B4417756-F17D-4165-B21A-ADED3106A865}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
+		{B4417756-F17D-4165-B21A-ADED3106A865}.Release|iPhone.ActiveCfg = Release|iPhone
+		{B4417756-F17D-4165-B21A-ADED3106A865}.Release|iPhone.Build.0 = Release|iPhone
+		{B4417756-F17D-4165-B21A-ADED3106A865}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
+		{B4417756-F17D-4165-B21A-ADED3106A865}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = GooglePlus.Touch\GooglePlus.Touch.csproj
+	EndGlobalSection
+EndGlobal
