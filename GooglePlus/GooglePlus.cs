@@ -27,30 +27,66 @@ using System.Text;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Web.Script.Serialization;
+using System.Json;
 using System.Collections;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace GooglePlus
 {
 	public class Api
 	{
 		CookieContainer cookies = new CookieContainer ();
-		string gpcaz = null;
-		string galx = null;
+		string cookiesFilePath = "";
+		BinaryFormatter bf = new BinaryFormatter ();
 		
-		public Api ()
+		string gpcaz = null;
+		string galx = null;		
+		
+		public Api (string cookiesFilePath = "")
 		{
+			this.cookiesFilePath = cookiesFilePath ?? "";
+			LoadCookies ();
+		}
+		
+		void LoadCookies ()
+		{
+			if (!string.IsNullOrEmpty (cookiesFilePath) && File.Exists (cookiesFilePath)) {				
+				try {
+					using (var s = File.OpenRead (cookiesFilePath)) {
+						var cs = bf.Deserialize (s) as CookieContainer;
+						if (cs != null) cookies = cs;
+					}					
+				} catch (Exception) {					
+				}
+			}
+		}
+		
+		void SaveCookies ()
+		{
+			if (!string.IsNullOrEmpty (cookiesFilePath)) {
+				try {
+					using (var s = File.OpenWrite (cookiesFilePath)) {
+						bf.Serialize (s, cookies);
+					}					
+				} catch (Exception) {					
+				}
+			}
 		}
 		
 		public HomeData SignIn (string email, string password)
-		{
+		{			
+			var html = Get ("http://plus.google.com");
+			
 			Console.WriteLine ("Logging in as {0}...", email);
+
+			Get ("https://www.google.com/accounts/ServiceLogin?service=oz&continue=https://plus.google.com/?gpcaz%3D"+gpcaz+"&ltmpl=es2st&hideNewAccountLink=1&hl=en-US",
+				referer: "https://plus.google.com/up/start/?continue=" + Uri.EscapeDataString ("https://plus.google.com/&type=st&gpcaz="+gpcaz));
 			
-			Get ("http://plus.google.com");
+			if (string.IsNullOrEmpty (galx)) {
+				throw new Exception ("Login service did not respond with the needed GALX value.");
+			}
 			
-			Get ("https://www.google.com/accounts/ServiceLogin?service=oz&continue=https://plus.google.com/?gpcaz%3D"+gpcaz+"&ltmpl=es2st&hideNewAccountLink=1&hl=en-US");
-			
-			var html = PostForm ("https://www.google.com/accounts/ServiceLoginAuth", new Dictionary<string,string> () {				
+			html = PostForm ("https://www.google.com/accounts/ServiceLoginAuth", new Dictionary<string,string> () {				
 				{"ltmpl", "es2st"},
 			    {"pstMsg", "1"},
 			    {"dnConn", "https://accounts.youtube.com"},
@@ -70,6 +106,8 @@ namespace GooglePlus
 			    {"signIn", "Sign in"},
 				{"asts", ""},
 			});
+			
+			SaveCookies ();
 			
 			return ScrapeHomeData (html);
 		}
@@ -93,11 +131,8 @@ namespace GooglePlus
 				.Replace (",,", ",\"\",")
 				;
 			
-			var jss = new JavaScriptSerializer();
-			jss.RegisterConverters (new JavaScriptConverter[] {
-				new DataConverter (),
-			});
-			var data = jss.Deserialize<HomeData> (script);
+			var jo = System.Json.JsonObject.Parse (script);
+			var data = new HomeData ((IDictionary<string, JsonValue>)jo);
 			
 			return data;
 		}
@@ -117,12 +152,12 @@ namespace GooglePlus
 			return ReadResponseText (req);
 		}
 		
-		string Get (string url)
+		string Get (string url, string referer = "")
 		{
-			return ReadResponseText (CreateRequest (url));
+			return ReadResponseText (CreateRequest (url, referer: referer));
 		}
 
-		HttpWebRequest CreateRequest (string url)
+		HttpWebRequest CreateRequest (string url, string referer = "")
 		{
 			var req = (HttpWebRequest)WebRequest.Create (url);
 			//req.UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.6) Mono/2.10 (HTML5, like Gecko) GooglePlus/1.0";
@@ -133,6 +168,9 @@ namespace GooglePlus
 			req.AllowAutoRedirect = true;
 			req.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
 			req.CookieContainer = cookies;
+			if (!string.IsNullOrEmpty (referer)) {
+				req.Referer = referer;
+			}
 			return req;
 		}
 
@@ -154,6 +192,9 @@ namespace GooglePlus
 							if (c.Name == "GALX") {
 								galx = c.Value;
 							}
+							else {
+								System.Console.WriteLine (":-( " + c.Name);
+							}
 						}
 					}
 					
@@ -165,7 +206,7 @@ namespace GooglePlus
 		}
 	}
 	
-	class DataConverter : JavaScriptConverter
+	/*class DataConverter : JavaScriptConverter
 	{
 		public override object Deserialize (IDictionary<string, object> d, Type type, JavaScriptSerializer serializer)
 		{
@@ -183,30 +224,30 @@ namespace GooglePlus
 				yield return typeof(HomeData);
 			}
 		}
-	}
+	}*/
 	
 	public class Data
 	{
-		public readonly IList DataList;
-		public Data (IList items) {
+		public readonly IList<JsonValue> DataList;
+		public Data (IList<JsonValue> items) {
 			DataList = items;
 		}
-		protected List<T> ListAt<T> (int i, Func<IList, T> ctor)
+		protected List<T> ListAt<T> (int i, Func<IList<JsonValue>, T> ctor)
 		{
 			var list = new List<T> ();
 			var dlist = (i < DataList.Count) ? DataList [i] as IList : null;
 			if (dlist != null && dlist.Count > 0) {
 				list.AddRange (from o in dlist.Cast<object> () 
-					let l = o as IList 
+					let l = o as IList<JsonValue> 
 					where l != null
 					select ctor (l));
 			}
 			return list;
 		}
-		protected T ObjectAt<T> (int i, Func<IList, T> ctor) where T : class
+		protected T ObjectAt<T> (int i, Func<IList<JsonValue>, T> ctor) where T : class
 		{
 			if (i >= DataList.Count) return null;
-			var dlist = DataList [i] as IList;
+			var dlist = DataList [i] as IList<JsonValue>;
 			if (dlist == null) return null;
 			return ctor (dlist);
 		}
@@ -222,7 +263,7 @@ namespace GooglePlus
 			if (i >= DataList.Count) return 0;
 			var o = DataList [i];
 			if (o == null) return 0;
-			if (o is int) return (int)o;
+			if (o.JsonType == JsonType.Number) return (int)o;
 			var s = o.ToString ();
 			if (s.Length == 0) return 0;
 			if (!char.IsDigit (s [0]) && s [0] != '-') return 0;
@@ -248,11 +289,21 @@ namespace GooglePlus
 		public StreamItemsData StreamItems;
 		public CirclesData Circles;
 		
-		public HomeData (IDictionary<string, object> d)
-			: base (new ArrayList ()) 
+		public HomeData (IDictionary<string, JsonValue> d)
+			: base (new List<JsonValue> ()) 
 		{
-			StreamItems = new StreamItemsData ((IList)d ["4"]);
-			Circles = new CirclesData ((IList)d ["12"]);
+			if (d.ContainsKey ("4")) {
+				var i = d ["4"];
+				StreamItems = new StreamItemsData ((IList<JsonValue>)i);
+			}
+			if (d.ContainsKey ("12")) {
+				var i = d ["12"];
+				Circles = new CirclesData ((IList<JsonValue>)i);
+			}
+			if (d.ContainsKey ("1")) {
+				var i = d ["1"];
+				System.Console.WriteLine (i.ToString ());
+			}
 		}
 	}
 	public class Media : Data
@@ -261,7 +312,7 @@ namespace GooglePlus
         public string ContentType;
         public string ShortContentType;
 
-		public Media (IList d)
+		public Media (IList<JsonValue> d)
 			: base (d) 
 		{
 			Url = UrlAt (1);
@@ -274,7 +325,7 @@ namespace GooglePlus
 		public string Key;
 		public string Value;
 
-		public MetadataEntry (IList d)
+		public MetadataEntry (IList<JsonValue> d)
 			: base (d) 
 		{
 			Value = StringAt (1);
@@ -287,7 +338,7 @@ namespace GooglePlus
         public int Height;
         public int Width;
 
-		public Thumbnail (IList d)
+		public Thumbnail (IList<JsonValue> d)
 			: base (d) 
 		{
 			ResourceUrl = UrlAt (1);
@@ -303,7 +354,7 @@ namespace GooglePlus
         public List<Thumbnail> Thumbnails;
         public List<MetadataEntry> Metadata;
 				
-		public Attachment (IList d)
+		public Attachment (IList<JsonValue> d)
 			: base (d) 
 		{
 			Preview = ObjectAt (5, x => new Thumbnail (x));
@@ -321,7 +372,7 @@ namespace GooglePlus
         public Uri UserUrl;
         public Uri UserPhotoUrl;
 		
-		public Voter (IList d)
+		public Voter (IList<JsonValue> d)
 			: base (d) 
 		{
 			FullName = StringAt (0);
@@ -338,7 +389,7 @@ namespace GooglePlus
         public int TotalVotes;
         public List<Voter> KnownVoters;
 
-		public Voting (IList d)
+		public Voting (IList<JsonValue> d)
 			: base (d) 
 		{
 			UrlId = StringAt (0);
@@ -361,7 +412,7 @@ namespace GooglePlus
         public Voting Voting;
         public Uri UserPhotoUrl;
 
-		public Comment (IList d)
+		public Comment (IList<JsonValue> d)
 			: base (d) 
 		{
 			UserFullName = StringAt (1);
@@ -412,7 +463,7 @@ namespace GooglePlus
 			}
 		}
 
-		public Item (IList d)
+		public Item (IList<JsonValue> d)
 			: base (d) 
 		{
 			ItemType = StringAt (2);
@@ -440,7 +491,7 @@ namespace GooglePlus
 	{
 		public readonly List<Item> Page0;
 		
-		public StreamItemsData (IList d)
+		public StreamItemsData (IList<JsonValue> d)
 			: base (d) 
 		{
 			Page0 = ListAt (0, x => new Item (x));
@@ -455,11 +506,11 @@ namespace GooglePlus
 		public string UrlId;
 		public int Order;
 
-		public Circle (IList d)
+		public Circle (IList<JsonValue> d)
 			: base (d) 
 		{
-			CircleId = ((IList)(d [0]))[0].ToString ();
-			var d1 = (IList)d [1];
+			CircleId = ((IList<JsonValue>)(d [0]))[0].ToString ();
+			var d1 = (IList<JsonValue>)d [1];
 			Name = d1 [0].ToString ();
 			Description = d1 [2].ToString ();
 			UrlId = d1 [12].ToString ();
@@ -471,7 +522,7 @@ namespace GooglePlus
 	{
 		public readonly List<Circle> Circles;
 		
-		public CirclesData (IList d)
+		public CirclesData (IList<JsonValue> d)
 			: base (d) 
 		{
 			Circles = ListAt (0, x => new Circle (x));
