@@ -6,15 +6,22 @@ using MonoTouch.UIKit;
 
 namespace GooglePlus.Touch
 {
-	
-	// The name AppDelegateIPhone is referenced in the MainWindowIPhone.xib file.
 	public partial class AppDelegateIPhone : UIApplicationDelegate
 	{
-		// This method is invoked when the application has loaded its UI and its ready to run
+		UITabBarController tabs;
+		
 		public override bool FinishedLaunching (UIApplication app, NSDictionary options)
 		{
-			// If you have defined a view, add it here:
-			// window.AddSubview (navigationController.View);
+			tabs = new UITabBarController ();
+			
+			tabs.SetViewControllers (new UIViewController[] {
+				new UINavigationController (new HomeController ()),
+				new UINavigationController (new PhotosController ()),
+				new UINavigationController (new ProfileController ()),
+				new UINavigationController (new CirclesController ()),
+				
+			}, false);
+			window.AddSubview (tabs.View);
 
 			window.MakeKeyAndVisible ();
 	

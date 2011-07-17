@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
@@ -81,10 +81,6 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="monotouch" />
-    <Reference Include="GooglePlus, Version=1.0.4210.38186, Culture=neutral, PublicKeyToken=null">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\GooglePlus\bin\Debug\GooglePlus.dll</HintPath>
-    </Reference>
     <Reference Include="System.Json" />
   </ItemGroup>
   <ItemGroup>
@@ -100,6 +96,16 @@
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegateIPhone.cs" />
     <Compile Include="AppDelegateIPad.cs" />
+    <Compile Include="..\GooglePlus\GooglePlus.cs">
+      <Link>GooglePlus.cs</Link>
+    </Compile>
+    <Compile Include="HomeController.cs" />
+    <Compile Include="PhotosController.cs" />
+    <Compile Include="ProfileController.cs" />
+    <Compile Include="UserController.cs" />
+    <Compile Include="CirclesController.cs" />
+    <Compile Include="PostController.cs" />
+    <Compile Include="AccountController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="MainWindowIPhone.xib" />
