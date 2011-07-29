@@ -64,11 +64,13 @@ namespace GooglePlus.Cli
 			}
 			
 			var page = data.StreamItems.Page0;
-			var nameWidth = (from i in page select i.UserFullName.Length).Max ();
-			foreach (var i in page) {
-				Console.WriteLine ("{0,-"+nameWidth+"} {1}", 
-					i.UserFullName,
-					Truncate (i.PlainText.Replace ("\n", " "), Console.WindowWidth - nameWidth - 1));
+			if (page.Count > 0) {
+				var nameWidth = (from i in page select i.UserFullName.Length).Max ();
+				foreach (var i in page) {
+					Console.WriteLine ("{0,-"+nameWidth+"} {1}", 
+						i.UserFullName,
+						Truncate (i.PlainText.Replace ("\n", " "), Console.WindowWidth - nameWidth - 1));
+				}
 			}
 		}
 		

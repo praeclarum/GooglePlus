@@ -185,6 +185,7 @@ namespace GooglePlus
 						if (i >= 0) {
 							var e = q.IndexOf ('&', i); if (e < 0) e = q.Length;
 							gpcaz = q.Substring (i + 6, e - (i+6));
+							//Console.WriteLine ("gpcaz = {0}", gpcaz);
 						}
 					}
 					if (galx == null) {
@@ -192,9 +193,7 @@ namespace GooglePlus
 							if (c.Name == "GALX") {
 								galx = c.Value;
 							}
-							else {
-								System.Console.WriteLine (":-( " + c.Name);
-							}
+							//Console.WriteLine ("{0} = {1}", c.Name, c.Value);
 						}
 					}
 					
@@ -235,7 +234,7 @@ namespace GooglePlus
 		protected List<T> ListAt<T> (int i, Func<IList<JsonValue>, T> ctor)
 		{
 			var list = new List<T> ();
-			var dlist = (i < DataList.Count) ? DataList [i] as IList : null;
+			var dlist = (i < DataList.Count) ? DataList [i] as IList<JsonValue> : null;
 			if (dlist != null && dlist.Count > 0) {
 				list.AddRange (from o in dlist.Cast<object> () 
 					let l = o as IList<JsonValue> 
