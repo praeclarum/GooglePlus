@@ -57,6 +57,12 @@ namespace GooglePlus.Cli
 		
 		void StreamCommand ()
 		{
+			if (data == null)
+			{
+				Console.WriteLine ("No data");
+				return;
+			}
+			
 			var page = data.StreamItems.Page0;
 			var nameWidth = (from i in page select i.UserFullName.Length).Max ();
 			foreach (var i in page) {
